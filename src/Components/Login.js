@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import app from '../Styles/TMDbComponent.css'
+import login from '../Styles/login.css'
+import TMDbComponent from '../Styles/TMDbComponent.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { initializeApp } from 'firebase/app';
 import {
@@ -85,15 +86,16 @@ const AuthComponent = ({ setUserEmail }) => {
         onChange={(e) => setPassword(e.target.value)}
         className="auth-input"
       />
+      <button onClick={handleRegistration} className="auth-button">
+        Registrarse
+      </button>
       <button onClick={handleEmailLogin} className="auth-button">
         Iniciar sesión con correo
       </button>
       <button onClick={handleGoogleLogin} className="auth-button">
         Iniciar sesión con Google
       </button>
-      <button onClick={handleRegistration} className="auth-button">
-        Registrarse
-      </button>
+      
       <Link to="/tmdb">Acceder sin autenticación</Link>
     </div>
   );

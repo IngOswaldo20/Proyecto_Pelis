@@ -5,17 +5,17 @@ import { Link } from 'react-router-dom';
 import '../Styles/SavedMovies.css';
 
 const SavedMovies = () => {
-  const [savedMovies, setSavedMovies] = useState([]);
+  const [savedMovies, setSavedMovies] = useState([]); // Almacena las películas guardadas
 
   useEffect(() => {
-    fetchSavedMovies();
+    fetchSavedMovies(); // Carga las películas guardadas al componente
   }, []);
 
   const fetchSavedMovies = async () => {
     try {
-      const querySnapshot = await getDocs(collection(db, 'savedMovies'));
-      const movies = querySnapshot.docs.map((doc) => doc.data());
-      setSavedMovies(movies);
+      const querySnapshot = await getDocs(collection(db, 'Vermastarde')); // Obtiene los documentos de la colección 
+      const movies = querySnapshot.docs.map((doc) => doc.data()); // Mapea los datos de los documentos a un array de películas
+      setSavedMovies(movies); // Actualiza las películas guardadas en el estado
     } catch (error) {
       console.log(error);
     }
@@ -23,11 +23,11 @@ const SavedMovies = () => {
 
   const handleDeleteMovies = async () => {
     try {
-      const querySnapshot = await getDocs(collection(db, 'savedMovies'));
+      const querySnapshot = await getDocs(collection(db, 'Vermastarde')); // Obtiene los documentos de la colección  
       querySnapshot.forEach((doc) => {
-        deleteDoc(doc.ref);
+        deleteDoc(doc.ref); // Elimina cada documento de la colección
       });
-      setSavedMovies([]);
+      setSavedMovies([]); // Actualiza la lista de películas guardadas vacía
     } catch (error) {
       console.log(error);
     }
@@ -40,7 +40,9 @@ const SavedMovies = () => {
         <button className="delete-button" onClick={handleDeleteMovies}>
           Borrar todas las películas
         </button>
-        <Link to="/tmdb" className="return-button">Volver a películas populares</Link>
+        <Link to="/tmdb" className="return-button">
+          Volver a películas populares
+        </Link>
       </div>
       <div className="movies-list">
         {savedMovies.map((movie) => (

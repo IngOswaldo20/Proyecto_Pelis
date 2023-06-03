@@ -134,3 +134,38 @@ p{
   font-size: 19px;
   color: aqua;
 }
+
+.recommendations-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #fca311;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  margin-left: 10px;
+  
+}
+
+.recommendations-button:hover {
+  background-color: #e69500;
+}
+
+.recommend-button {
+  background-color: #ff5722;
+  color: white;
+  padding: 4px 26px;
+  border: none;
+  border-radius: 2px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.recommend-button:hover {
+  background-color: #f44336;
+}
+
+.movie-button,.recommend-button {
+  margin-bottom: 10px; /* Agrega un espacio de altura entre los botones */
+}

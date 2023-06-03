@@ -26,7 +26,7 @@ const RecommendationsComponent = () => {
     <div className="recommendations-container">
       <h2>Películas recomendadas</h2>
       <Link to="/tmdb" className="back-button9">
-        Volver a TMDB
+        Volver a populares
       </Link>
       {loading ? (
         <p>Cargando...</p> // Muestra un mensaje de carga si los datos aún se están cargando

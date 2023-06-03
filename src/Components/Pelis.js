@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { auth, db, collection, addDoc } from './firebase';
 
 const API_KEY = '4c5c9c802cd6efdf2a8b841f311e72f8';
 
 const TMDbComponent = ({ userEmail }) => {
   const [movies, setMovies] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [popularMovies, setPopularMovies] = useState([]);
-  const [showPopularButton, setShowPopularButton] = useState(false);
+  const [showPopularMovies, setShowPopularMovies] = useState(true);
 
   useEffect(() => {
-    fetchPopularMovies();
-  }, []);
+    if (showPopularMovies) {
+      fetchPopularMovies();
+    }
+  }, [showPopularMovies]);
 
   const fetchPopularMovies = async () => {
     try {
@@ -20,7 +22,6 @@ const TMDbComponent = ({ userEmail }) => {
         `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`
       );
       setMovies(response.data.results);
-      setPopularMovies(response.data.results);
     } catch (error) {
       console.log(error);
     }
@@ -36,26 +37,39 @@ const TMDbComponent = ({ userEmail }) => {
         `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${searchQuery}`
       );
       setMovies(response.data.results);
-      setShowPopularButton(true);
+      setShowPopularMovies(false);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleShowPopularMovies = () => {
-    setMovies(popularMovies);
-    setShowPopularButton(false);
+  const handleSaveMovie = async (movie) => {
+    try {
+      await addDoc(collection(db, 'savedMovies'), movie);
+      console.log('Película guardada');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <div className="tmdb-container">
       <div className="header">
-        <h2 className='popular-title'>Películas populares</h2>
-        <Link to="/" className="back-button">
-          Regresar al inicio de sesión
-        </Link>
+        <h2>Películas populares</h2>
+        {showPopularMovies && (
+          <Link to="/" className="back-button">Cerrar sesión</Link>
+        )}
+        {!showPopularMovies && (
+          <button
+            className="back-button"
+            onClick={() => setShowPopularMovies(true)}
+          >
+            Regresar a populares
+          </button>
+        )}
+        <Link to="/savedmovies" className="saved-movies-button">Ver películas guardadas</Link>
       </div>
-      <p className='user-email'>Usuario: {userEmail}</p>
+      <p>Usuario: {userEmail}</p>
       <div className="search-bar">
         <input
           type="text"
@@ -67,11 +81,6 @@ const TMDbComponent = ({ userEmail }) => {
         <button onClick={handleSearch} className="search-button">
           Buscar
         </button>
-        {showPopularButton && (
-          <button onClick={handleShowPopularMovies} className="popular-button">
-            Mostrar populares
-          </button>
-        )}
       </div>
       <div className="movie-list">
         {movies.map((movie) => (
@@ -83,15 +92,12 @@ const TMDbComponent = ({ userEmail }) => {
             />
             <div className="movie-details">
               <h3>{movie.title}</h3>
-              <p>Fecha de estreno: {movie.release_date}</p>
-              <p>Calificación: {movie.vote_average}</p>
-              <p>Popularidad: {movie.popularity}</p>
               <p>{movie.overview}</p>
               <button
                 className="movie-button"
-                onClick={() => console.log(movie.id)}
+                onClick={() => handleSaveMovie(movie)}
               >
-                Ver ID
+                Guardar para ver más tarde
               </button>
             </div>
           </div>

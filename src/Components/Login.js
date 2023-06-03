@@ -70,7 +70,7 @@ const AuthComponent = ({ setUserEmail }) => {
 
   return (
     <div className="auth-container">
-      <h2>Autenticación</h2>
+      <h2 className='Auth1'>Autenticación</h2>
       <div className="auth-error">{errorMessage}</div>
       <input
         type="email"
@@ -96,7 +96,7 @@ const AuthComponent = ({ setUserEmail }) => {
         Iniciar sesión con Google
       </button>
       
-      <Link to="/tmdb">Acceder sin autenticación</Link>
+      
     </div>
   );
 };
